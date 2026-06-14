@@ -1,2 +1,4 @@
 import { heroui } from "@heroui/react";
-export default heroui();
+export default heroui({
+  defaultTheme: "dark",
+});

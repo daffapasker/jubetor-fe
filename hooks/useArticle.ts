@@ -54,8 +54,24 @@ const useArticle = () => {
       params += `&search=${currentSearch}`;
     }
     const res = await articleServices.getAllArticles(params);
-    const { data } = res;
-    return data;
+    const { data: allArticles } = res;
+
+    // If API returns paginated response, use it directly
+    if (allArticles?.pagination) {
+      return allArticles;
+    }
+
+    // Flat array response — paginate on frontend
+    const articles = Array.isArray(allArticles) ? allArticles : [];
+    const page = Number(currentPage) || 1;
+    const limit = Number(currentLimit) || 8;
+    const totalPages = Math.ceil(articles.length / limit) || 1;
+    const paginatedData = articles.slice((page - 1) * limit, page * limit);
+
+    return {
+      data: paginatedData,
+      pagination: { totalPages },
+    };
   };
 
   const {
