@@ -63,6 +63,7 @@ const DataTable = (props: PropTypes) => {
           onChange={onChangeSearch}
           onClear={onClearSearch}
           aria-label="Search"
+          autoComplete="off"
         />
         {buttonTopContentLabel && (
           <Button
