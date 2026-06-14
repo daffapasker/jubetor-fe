@@ -30,7 +30,7 @@ export default function DashboardSidebar({
     <>
       {/* ── Mobile top bar ── */}
       <div className="fixed top-0 right-0 left-0 z-40 flex items-center justify-between border-b border-neutral-800 bg-neutral-950 px-4 py-3 md:hidden">
-        <h1 className="text-lg font-bold text-red-500">Jubetor</h1>
+        <h1 className="text-lg font-bold text-red-600">Jubetor</h1>
         <button
           onClick={() => setIsMobileOpen(true)}
           className="rounded-lg p-2 text-neutral-400 transition-colors hover:bg-neutral-800"
@@ -61,7 +61,7 @@ export default function DashboardSidebar({
             >
               {/* Close button */}
               <div className="flex items-center justify-between px-5 pt-5 pb-2">
-                <span className="text-xl font-bold tracking-tight text-red-500">
+                <span className="text-xl font-bold tracking-tight text-red-600">
                   Jubetor
                 </span>
                 <button
@@ -84,7 +84,7 @@ export default function DashboardSidebar({
                       onClick={() => setIsMobileOpen(false)}
                       className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
                         isActive
-                          ? "bg-red-500 text-white shadow-md shadow-red-500/20"
+                          ? "bg-red-600 text-white shadow-md shadow-red-600/20"
                           : "text-neutral-400 hover:bg-neutral-800 hover:text-white"
                       }`}
                     >
@@ -100,7 +100,7 @@ export default function DashboardSidebar({
                 <div className="border-t border-neutral-800 p-3">
                   <button
                     onClick={onLogout}
-                    className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-500 transition-colors hover:bg-red-500/10"
+                    className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-600/10"
                   >
                     <CiLogout size={18} />
                     Logout
@@ -116,7 +116,7 @@ export default function DashboardSidebar({
       <aside className="fixed top-0 bottom-0 left-0 z-30 hidden w-56 flex-col border-r border-neutral-800 bg-neutral-950 md:flex">
         {/* Logo */}
         <div className="px-5 pt-5 pb-2">
-          <span className="text-xl font-bold tracking-tight text-red-500">
+          <span className="text-xl font-bold tracking-tight text-red-600">
             Jubetor
           </span>
         </div>
@@ -131,7 +131,7 @@ export default function DashboardSidebar({
                 href={item.href}
                 className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
                   isActive
-                    ? "bg-red-500 text-white shadow-md shadow-red-500/20"
+                    ? "bg-red-600 text-white shadow-md shadow-red-600/20"
                     : "text-neutral-400 hover:bg-neutral-800 hover:text-white"
                 }`}
               >
@@ -147,7 +147,7 @@ export default function DashboardSidebar({
           <div className="border-t border-neutral-800 p-3">
             <button
               onClick={onLogout}
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-500 transition-colors hover:bg-red-500/10"
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-600/10"
             >
               <CiLogout size={18} />
               Logout

@@ -65,7 +65,11 @@ const DataTable = (props: PropTypes) => {
           aria-label="Search"
         />
         {buttonTopContentLabel && (
-          <Button color="danger" onPress={onClickButtonTopContent}>
+          <Button
+            color="danger"
+            className="bg-red-600 hover:bg-red-700 text-white font-medium"
+            onPress={onClickButtonTopContent}
+          >
             {buttonTopContentLabel}
           </Button>
         )}
@@ -141,7 +145,7 @@ const DataTable = (props: PropTypes) => {
         }
       >
         {(item) => (
-          <TableRow key={item._id as Key}>
+          <TableRow key={(item._id || item.id) as Key}>
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)}</TableCell>
             )}

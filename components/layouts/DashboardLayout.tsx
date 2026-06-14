@@ -36,7 +36,7 @@ export default function DashboardLayout({
   }, [docTitle]);
 
   return (
-    <div className="min-h-screen bg-neutral-900">
+    <div className="min-h-screen bg-neutral-900 text-white">
       <DashboardSidebar items={sidebarItems} onLogout={onLogout} />
 
       {/* Main content */}
