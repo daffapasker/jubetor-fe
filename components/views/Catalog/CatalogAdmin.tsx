@@ -8,12 +8,14 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  useDisclosure,
 } from "@heroui/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Key, ReactNode, useCallback } from "react";
 import { CiMenuKebab } from "react-icons/ci";
 import { COLUMN_LISTS_CATALOG } from "./Catalog.constant";
+import AddCatalog from "./AddCatalog";
 
 const formatDateIndo = (dateString: string) => {
   const date = new Date(dateString);
@@ -26,6 +28,7 @@ const formatDateIndo = (dateString: string) => {
 
 const CatalogAdmin = () => {
   const router = useRouter();
+  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const {
     currentPage,
     currentLimit,
@@ -36,6 +39,7 @@ const CatalogAdmin = () => {
     handleSearch,
     isLoadingCatalog,
     isRefetchingCatalog,
+    refetchCatalog,
   } = useCatalog();
 
   const renderCell = useCallback(
@@ -119,7 +123,13 @@ const CatalogAdmin = () => {
         renderCell={renderCell}
         totalPages={dataCatalog?.pagination?.totalPages || 1}
         buttonTopContentLabel="Tambah Katalog"
-        onClickButtonTopContent={() => {}}
+        onClickButtonTopContent={onOpen}
+      />
+      <AddCatalog
+        isOpen={isOpen}
+        onClose={onClose}
+        onOpenChange={onOpenChange}
+        refetchCatalog={refetchCatalog}
       />
     </section>
   );

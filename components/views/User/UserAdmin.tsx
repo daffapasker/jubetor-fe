@@ -8,14 +8,23 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  useDisclosure,
 } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { Key, ReactNode, useCallback } from "react";
 import { CiMenuKebab } from "react-icons/ci";
 import { COLUMN_LISTS_USER } from "./User.constant";
+import AddUser from "./AddUser";
 
 const UserAdmin = () => {
   const router = useRouter();
+  const {
+    isOpen: isAddOpen,
+    onOpen: onAddOpen,
+    onClose: onAddClose,
+    onOpenChange: onAddOpenChange,
+  } = useDisclosure();
+
   const {
     currentPage,
     currentLimit,
@@ -26,6 +35,7 @@ const UserAdmin = () => {
     handleSearch,
     isLoadingUser,
     isRefetchingUser,
+    refetchUser,
   } = useUser();
 
   const renderCell = useCallback(
@@ -82,7 +92,13 @@ const UserAdmin = () => {
         renderCell={renderCell}
         totalPages={dataUser?.pagination?.totalPages || 1}
         buttonTopContentLabel="Tambah Pengguna"
-        onClickButtonTopContent={() => {}}
+        onClickButtonTopContent={onAddOpen}
+      />
+      <AddUser
+        isOpen={isAddOpen}
+        onClose={onAddClose}
+        onOpenChange={onAddOpenChange}
+        refetchUser={refetchUser}
       />
     </section>
   );

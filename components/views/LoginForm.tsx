@@ -8,7 +8,7 @@ export default function LoginForm() {
   const { control, errors, handlerSignIn, isPendingSignIn } = useLogin();
 
   return (
-    <form onSubmit={handlerSignIn} className="flex flex-col gap-6">
+    <form onSubmit={handlerSignIn} className="flex flex-col gap-6" autoComplete="off">
       {/* Header */}
       <div className="flex flex-col gap-1">
         <h2 className="text-2xl font-bold bg-gradient-to-r from-red-500 to-red-700 bg-clip-text text-transparent">

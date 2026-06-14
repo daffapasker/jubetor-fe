@@ -8,12 +8,14 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  useDisclosure,
 } from "@heroui/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Key, ReactNode, useCallback } from "react";
 import { CiMenuKebab } from "react-icons/ci";
 import { COLUMN_LISTS_ARTICLE } from "./Article.constant";
+import AddArticle from "./AddArticle";
 
 const formatDateIndo = (dateString: string) => {
   const date = new Date(dateString);
@@ -26,6 +28,7 @@ const formatDateIndo = (dateString: string) => {
 
 const ArticleAdmin = () => {
   const router = useRouter();
+  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const {
     currentPage,
     currentLimit,
@@ -36,6 +39,7 @@ const ArticleAdmin = () => {
     handleSearch,
     isLoadingArticle,
     isRefetchingArticle,
+    refetchArticle,
   } = useArticle();
 
   const renderCell = useCallback(
@@ -119,7 +123,13 @@ const ArticleAdmin = () => {
         renderCell={renderCell}
         totalPages={dataArticle?.pagination?.totalPages || 1}
         buttonTopContentLabel="Tambah Artikel"
-        onClickButtonTopContent={() => {}}
+        onClickButtonTopContent={onOpen}
+      />
+      <AddArticle
+        isOpen={isOpen}
+        onClose={onClose}
+        onOpenChange={onOpenChange}
+        refetchArticle={refetchArticle}
       />
     </section>
   );
