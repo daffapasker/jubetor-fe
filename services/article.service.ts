@@ -6,6 +6,8 @@ const articleServices = {
     instance.get(`${endpoint.ARTICLE}${params ? `?${params}` : ""}`),
   createArticle: (payload: any, config?: any) =>
     instance.post(`${endpoint.ARTICLE}`, payload, config),
+  deleteArticle: (id: string) =>
+    instance.delete(`${endpoint.ARTICLE}/${id}`),
 };
 
 export default articleServices;

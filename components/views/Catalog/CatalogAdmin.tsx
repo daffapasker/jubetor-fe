@@ -12,10 +12,11 @@ import {
 } from "@heroui/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Key, ReactNode, useCallback } from "react";
+import { Key, ReactNode, useCallback, useState } from "react";
 import { CiMenuKebab } from "react-icons/ci";
 import { COLUMN_LISTS_CATALOG } from "./Catalog.constant";
 import AddCatalog from "./AddCatalog";
+import ConfirmationModal from "@/components/ui/ConfirmationModal";
 
 const formatDateIndo = (dateString: string) => {
   const date = new Date(dateString);
@@ -40,7 +41,21 @@ const CatalogAdmin = () => {
     isLoadingCatalog,
     isRefetchingCatalog,
     refetchCatalog,
+    deleteCatalog,
+    isDeletingCatalog,
   } = useCatalog();
+
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+
+  const handleConfirmDelete = async () => {
+    if (deleteId) {
+      deleteCatalog(deleteId, {
+        onSuccess: () => {
+          setDeleteId(null);
+        },
+      });
+    }
+  };
 
   const renderCell = useCallback(
     (catalog: Record<string, unknown>, columnKey: Key) => {
@@ -94,6 +109,7 @@ const CatalogAdmin = () => {
                 <DropdownItem
                   key="delete-catalog-button"
                   className="text-danger-500"
+                  onPress={() => setDeleteId((catalog._id || catalog.id) as string)}
                 >
                   Hapus Katalog
                 </DropdownItem>
@@ -130,6 +146,15 @@ const CatalogAdmin = () => {
         onClose={onClose}
         onOpenChange={onOpenChange}
         refetchCatalog={refetchCatalog}
+      />
+      <ConfirmationModal
+        isOpen={deleteId !== null}
+        onClose={() => setDeleteId(null)}
+        onConfirm={handleConfirmDelete}
+        isLoading={isDeletingCatalog}
+        title="Hapus Katalog"
+        message="Apakah Anda yakin ingin menghapus katalog ini? Tindakan ini tidak dapat dibatalkan."
+        confirmLabel="Hapus"
       />
     </section>
   );

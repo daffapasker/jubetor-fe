@@ -1,8 +1,9 @@
 import { DELAY, LIMIT_DEFAULT, PAGE_DEFAULT } from "@/constant/list.constant";
 import catalogServices from "@/services/catalog.service";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useCallback, useEffect } from "react";
+import { toast } from "react-toastify";
 import useDebounce from "./useDebounce";
 
 const useCatalog = () => {
@@ -85,6 +86,21 @@ const useCatalog = () => {
     enabled: !!currentPage && !!currentLimit,
   });
 
+  const { mutate: deleteCatalog, isPending: isDeletingCatalog } = useMutation({
+    mutationFn: catalogServices.deleteCatalog,
+    onSuccess: () => {
+      toast.success("Katalog berhasil dihapus");
+      refetchCatalog();
+    },
+    onError: (error: any) => {
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "Gagal menghapus katalog"
+      );
+    },
+  });
+
   const handleChangePage = (page: number) => {
     const qs = createQueryString({ page: String(page) });
     router.push(`${pathname}?${qs}`);
@@ -121,6 +137,8 @@ const useCatalog = () => {
     isLoadingCatalog,
     isRefetchingCatalog,
     refetchCatalog,
+    deleteCatalog,
+    isDeletingCatalog,
 
     setURL,
     currentPage,

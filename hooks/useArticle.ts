@@ -1,8 +1,9 @@
 import { DELAY, LIMIT_DEFAULT, PAGE_DEFAULT } from "@/constant/list.constant";
 import articleServices from "@/services/article.service";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useCallback, useEffect } from "react";
+import { toast } from "react-toastify";
 import useDebounce from "./useDebounce";
 
 const useArticle = () => {
@@ -85,6 +86,21 @@ const useArticle = () => {
     enabled: !!currentPage && !!currentLimit,
   });
 
+  const { mutate: deleteArticle, isPending: isDeletingArticle } = useMutation({
+    mutationFn: articleServices.deleteArticle,
+    onSuccess: () => {
+      toast.success("Artikel berhasil dihapus");
+      refetchArticle();
+    },
+    onError: (error: any) => {
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "Gagal menghapus artikel"
+      );
+    },
+  });
+
   const handleChangePage = (page: number) => {
     const qs = createQueryString({ page: String(page) });
     router.push(`${pathname}?${qs}`);
@@ -121,6 +137,8 @@ const useArticle = () => {
     isLoadingArticle,
     isRefetchingArticle,
     refetchArticle,
+    deleteArticle,
+    isDeletingArticle,
 
     setURL,
     currentPage,

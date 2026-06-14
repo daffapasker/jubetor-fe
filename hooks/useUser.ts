@@ -1,8 +1,9 @@
 import { DELAY, LIMIT_DEFAULT, PAGE_DEFAULT } from "@/constant/list.constant";
 import userServices from "@/services/user.service";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useCallback, useEffect } from "react";
+import { toast } from "react-toastify";
 import useDebounce from "./useDebounce";
 
 const useUser = () => {
@@ -96,6 +97,21 @@ const useUser = () => {
     enabled: !!currentPage && !!currentLimit,
   });
 
+  const { mutate: deleteUser, isPending: isDeletingUser } = useMutation({
+    mutationFn: userServices.deleteUser,
+    onSuccess: () => {
+      toast.success("Pengguna berhasil dihapus");
+      refetchUser();
+    },
+    onError: (error: any) => {
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "Gagal menghapus pengguna"
+      );
+    },
+  });
+
   const handleChangePage = (page: number) => {
     const qs = createQueryString({ page: String(page) });
     router.push(`${pathname}?${qs}`);
@@ -132,6 +148,8 @@ const useUser = () => {
     isLoadingUser,
     isRefetchingUser,
     refetchUser,
+    deleteUser,
+    isDeletingUser,
 
     setURL,
     currentPage,

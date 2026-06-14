@@ -6,6 +6,8 @@ const catalogServices = {
     instance.get(`${endpoint.CATALOG}${params ? `?${params}` : ""}`),
   createCatalog: (payload: any, config?: any) =>
     instance.post(`${endpoint.CATALOG}`, payload, config),
+  deleteCatalog: (id: string) =>
+    instance.delete(`${endpoint.CATALOG}/${id}`),
 };
 
 export default catalogServices;

@@ -3,6 +3,7 @@ const endpoint = {
   USER: "/users",
   ARTICLE: "/articles",
   CATALOG: "/design-catalogs",
+  PROJECT: "/projects",
 };
 
 export default endpoint;

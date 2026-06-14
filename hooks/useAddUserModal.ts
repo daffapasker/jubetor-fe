@@ -1,6 +1,6 @@
 import userServices from "@/services/user.service";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import * as yup from "yup";
@@ -21,6 +21,7 @@ const addUserSchema = yup.object().shape({
 type AddUserFormData = yup.InferType<typeof addUserSchema>;
 
 const useAddUserModal = () => {
+  const queryClient = useQueryClient();
   const {
     control,
     handleSubmit,
@@ -49,6 +50,7 @@ const useAddUserModal = () => {
     },
     onSuccess: () => {
       toast.success("Pengguna berhasil ditambahkan");
+      queryClient.invalidateQueries({ queryKey: ["User"] });
       reset();
     },
   });

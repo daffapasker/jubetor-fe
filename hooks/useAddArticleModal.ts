@@ -1,6 +1,6 @@
 import articleServices from "@/services/article.service";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import * as yup from "yup";
@@ -18,6 +18,7 @@ type AddArticleFormData = {
 };
 
 const useAddArticleModal = () => {
+  const queryClient = useQueryClient();
   const {
     control,
     handleSubmit,
@@ -60,6 +61,7 @@ const useAddArticleModal = () => {
     },
     onSuccess: () => {
       toast.success("Artikel berhasil ditambahkan");
+      queryClient.invalidateQueries({ queryKey: ["Article"] });
       reset();
     },
   });

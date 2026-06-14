@@ -11,10 +11,11 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import { useRouter } from "next/navigation";
-import { Key, ReactNode, useCallback } from "react";
+import { Key, ReactNode, useCallback, useState } from "react";
 import { CiMenuKebab } from "react-icons/ci";
 import { COLUMN_LISTS_USER } from "./User.constant";
 import AddUser from "./AddUser";
+import ConfirmationModal from "@/components/ui/ConfirmationModal";
 
 const UserAdmin = () => {
   const router = useRouter();
@@ -36,7 +37,21 @@ const UserAdmin = () => {
     isLoadingUser,
     isRefetchingUser,
     refetchUser,
+    deleteUser,
+    isDeletingUser,
   } = useUser();
+
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+
+  const handleConfirmDelete = async () => {
+    if (deleteId) {
+      deleteUser(deleteId, {
+        onSuccess: () => {
+          setDeleteId(null);
+        },
+      });
+    }
+  };
 
   const renderCell = useCallback(
     (user: Record<string, unknown>, columnKey: Key) => {
@@ -63,6 +78,7 @@ const UserAdmin = () => {
                 <DropdownItem
                   key="delete-user-button"
                   className="text-danger-500"
+                  onPress={() => setDeleteId((user._id || user.id) as string)}
                 >
                   Delete User
                 </DropdownItem>
@@ -99,6 +115,15 @@ const UserAdmin = () => {
         onClose={onAddClose}
         onOpenChange={onAddOpenChange}
         refetchUser={refetchUser}
+      />
+      <ConfirmationModal
+        isOpen={deleteId !== null}
+        onClose={() => setDeleteId(null)}
+        onConfirm={handleConfirmDelete}
+        isLoading={isDeletingUser}
+        title="Hapus Pengguna"
+        message="Apakah Anda yakin ingin menghapus pengguna ini? Semua data terkait pengguna ini akan dihapus secara permanen."
+        confirmLabel="Hapus"
       />
     </section>
   );
