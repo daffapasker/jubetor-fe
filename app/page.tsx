@@ -99,21 +99,19 @@ export default function Home() {
       {/* ========== NAVBAR ========== */}
       <Navbar
         isBordered
-        className="bg-black/80 backdrop-blur-md p-8 border-zinc-800 sticky top-0 z-50"
-        maxWidth="xl"
+        className="bg-black/80 backdrop-blur-md px-6 py-3 border-b border-zinc-800 sticky top-0 z-50"
+        maxWidth="full"
       >
         <NavbarBrand>
           <Image
             removeWrapper
             alt="Jubetor Logo"
-            className="w-20 h-20 rounded-full object-cover"
+            className="w-12 h-12 rounded-full object-cover"
             src="/jubetor_logo.jpg"
           />
-          {/* <p className="font-bold text-xl ml-3 tracking-tight text-white">
-            JUBETOR
-          </p> */}
+
         </NavbarBrand>
-        <NavbarContent className="hidden sm:flex gap-6 font-bold" justify="center">
+        <NavbarContent className="hidden sm:flex gap-8 font-bold" justify="center">
           <NavbarItem>
             <Link href="#" className="text-zinc-300 hover:text-white transition">
               Beranda
@@ -140,7 +138,7 @@ export default function Home() {
             <Button
               onPress={() => router.push("/login")}
               variant="shadow"
-              className="bg-red-600 p-4 hover:bg-red-700 text-white font-semibold"
+              className="bg-red-600 px-6 py-2 hover:bg-red-700 text-white font-semibold"
               size="sm"
             >
               Login
@@ -150,10 +148,13 @@ export default function Home() {
       </Navbar>
 
       {/* ========== HERO SECTION ========== */}
-      <section className="flex flex-col items-center justify-center text-center px-6 pt-32 pb-24 max-w-4xl mx-auto">
-        <p className="text-red-500 tracking-widest text-sm mb-4 font-medium uppercase">
-          Custom Motorcycle Garage
-        </p>
+      <section className="flex flex-col items-center justify-center text-center px-6 pt-20 pb-24 max-w-4xl mx-auto">
+        <Image
+            removeWrapper
+            alt="Jubetor Logo"
+            className="w-64 h-full rounded-full object-cover"
+            src="/jubetor_logo.jpg"
+          />
         <h1 className="text-5xl md:text-7xl font-extrabold leading-tight mb-6">
           Wujudkan Motor Impian <br />
           <span className="text-red-500">Tanpa Batas</span>
@@ -228,8 +229,8 @@ export default function Home() {
                   <div className="mt-2">
                     <span
                       className={`text-xs px-2 py-1 rounded-full ${catalog.isAvailable === "true"
-                          ? "bg-green-500/20 text-green-400"
-                          : "bg-red-500/20 text-red-400"
+                        ? "bg-green-500/20 text-green-400"
+                        : "bg-red-500/20 text-red-400"
                         }`}
                     >
                       {catalog.isAvailable === "true" ? "Tersedia" : "Tidak Tersedia"}
