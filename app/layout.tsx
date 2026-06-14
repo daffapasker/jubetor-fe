@@ -38,9 +38,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bebasNeue.variable} ${rajdhani.variable} ${dmSans.variable} h-full antialiased`}
+      className={`${bebasNeue.variable} ${rajdhani.variable} ${dmSans.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col font-sans">
+      <body className="min-h-full flex flex-col font-sans bg-neutral-900 text-white">
         <Providers>{children}</Providers>
         <ToastContainer
           position="top-right"
