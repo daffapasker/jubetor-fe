@@ -49,13 +49,40 @@ const useUser = () => {
   }, [searchParams, setURL]);
 
   const getUsers = async () => {
-    let params = `limit=${currentLimit}&page=${currentPage}&role=client`;
+    let params = `limit=${currentLimit}&page=${currentPage}`;
     if (currentSearch) {
       params += `&search=${currentSearch}`;
     }
     const res = await userServices.getAllUsers(params);
-    const { data } = res;
-    return data;
+    const { data: allUsers } = res;
+
+    // Filter only client role on frontend
+    const clientUsers = Array.isArray(allUsers)
+      ? allUsers.filter(
+          (user: Record<string, unknown>) => user.role === "client",
+        )
+      : allUsers?.data?.filter(
+          (user: Record<string, unknown>) => user.role === "client",
+        ) || [];
+
+    // If API returns paginated response, use it; otherwise build pagination from filtered data
+    if (allUsers?.pagination) {
+      return {
+        data: clientUsers,
+        pagination: allUsers.pagination,
+      };
+    }
+
+    // Flat array response — paginate on frontend
+    const page = Number(currentPage) || 1;
+    const limit = Number(currentLimit) || 8;
+    const totalPages = Math.ceil(clientUsers.length / limit) || 1;
+    const paginatedData = clientUsers.slice((page - 1) * limit, page * limit);
+
+    return {
+      data: paginatedData,
+      pagination: { totalPages },
+    };
   };
 
   const {

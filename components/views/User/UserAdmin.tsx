@@ -45,7 +45,7 @@ const UserAdmin = () => {
                 <DropdownItem
                   key="detail-user-button"
                   onPress={() =>
-                    router.push(`/admin/user/${user._id}`)
+                    router.push(`/admin/user/${user._id || user.id}`)
                   }
                 >
                   Detail User
@@ -81,6 +81,8 @@ const UserAdmin = () => {
         onClearSearch={handleClearSearch}
         renderCell={renderCell}
         totalPages={dataUser?.pagination?.totalPages || 1}
+        buttonTopContentLabel="Tambah Pengguna"
+        onClickButtonTopContent={() => {}}
       />
     </section>
   );
