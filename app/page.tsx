@@ -15,6 +15,7 @@ import {
   Link,
   Spinner,
 } from "@heroui/react";
+import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 export default function Home() {
@@ -24,6 +25,7 @@ export default function Home() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [catalogs, setCatalogs] = React.useState<any[]>([]);
   const [loadingCatalogs, setLoadingCatalogs] = React.useState(false);
+  const router = useRouter();
 
   const fetchArticles = async () => {
     setLoadingArticles(true);
@@ -62,7 +64,6 @@ export default function Home() {
       const data = await response.json();
       // Response langsung berupa array catalogs
       setCatalogs(Array.isArray(data) ? data : data.projects || []);
-      console.log("Fetched catalogs:", Array.isArray(data) ? data : data.projects || []);
     } catch (error) {
       console.error("Error fetching projects:", error);
     } finally {
@@ -71,7 +72,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-   
+
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchArticles();
     fetchCatalogs();
@@ -137,13 +138,12 @@ export default function Home() {
         <NavbarContent justify="end">
           <NavbarItem>
             <Button
-              as={Link}
-              href="#contact"
+              onPress={() => router.push("/login")}
               variant="shadow"
               className="bg-red-600 p-4 hover:bg-red-700 text-white font-semibold"
               size="sm"
             >
-              Hubungi Kami
+              Login
             </Button>
           </NavbarItem>
         </NavbarContent>
@@ -227,11 +227,10 @@ export default function Home() {
                   </p>
                   <div className="mt-2">
                     <span
-                      className={`text-xs px-2 py-1 rounded-full ${
-                        catalog.isAvailable === "true"
+                      className={`text-xs px-2 py-1 rounded-full ${catalog.isAvailable === "true"
                           ? "bg-green-500/20 text-green-400"
                           : "bg-red-500/20 text-red-400"
-                      }`}
+                        }`}
                     >
                       {catalog.isAvailable === "true" ? "Tersedia" : "Tidak Tersedia"}
                     </span>
