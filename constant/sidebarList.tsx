@@ -1,10 +1,8 @@
 import {
-  CiBookmark,
+  CiFileOn,
   CiGrid41,
-  CiSettings,
-  CiShoppingTag,
+  CiUser,
   CiViewList,
-  CiWallet,
 } from "react-icons/ci";
 
 const SIDEBAR_ADMIN = [
@@ -16,19 +14,19 @@ const SIDEBAR_ADMIN = [
   },
   {
     key: "user",
-    label: "User",
+    label: "Manajemen Pengguna",
     href: "/admin/user",
-    icon: <CiBookmark />,
+    icon: <CiUser />,
   },
   {
     key: "article",
-    label: "Article",
+    label: "Manajemen Artikel",
     href: "/admin/article",
-    icon: <CiShoppingTag />,
+    icon: <CiFileOn />,
   },
   {
     key: "catalog",
-    label: "Catalog",
+    label: "Manajemen Katalog",
     href: "/admin/catalog",
     icon: <CiViewList />,
   },
