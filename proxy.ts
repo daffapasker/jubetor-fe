@@ -21,7 +21,6 @@ const getRoleFromToken = (token?: string | null): Role | null => {
     if (!payload) return null;
     const decoded = decodeBase64Url(payload);
     const data = JSON.parse(decoded);
-    console.log("JWT payload:", JSON.stringify(data, null, 2));
     return data?.role ?? data?.user?.role ?? null;
   } catch {
     return null;

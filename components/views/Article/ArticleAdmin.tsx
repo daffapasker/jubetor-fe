@@ -98,14 +98,14 @@ const ArticleAdmin = () => {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem
+                {/* <DropdownItem
                   key="detail-article-button"
                   onPress={() =>
                     router.push(`/admin/article/${article._id || article.id}`)
                   }
                 >
                   Detail Artikel
-                </DropdownItem>
+                </DropdownItem> */}
                 <DropdownItem
                   key="delete-article-button"
                   className="text-danger-500"

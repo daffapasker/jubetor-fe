@@ -62,7 +62,7 @@ const UserAdmin = () => {
           return (
             <Dropdown>
               <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light" aria-label="Actions">
+                <Button isIconOnly hidden size="sm" variant="light" aria-label="Actions">
                   <CiMenuKebab className="text-default-700" />
                 </Button>
               </DropdownTrigger>

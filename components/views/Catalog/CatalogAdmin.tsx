@@ -98,14 +98,14 @@ const CatalogAdmin = () => {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem
+                {/* <DropdownItem
                   key="detail-catalog-button"
                   onPress={() =>
                     router.push(`/admin/catalog/${catalog._id || catalog.id}`)
                   }
                 >
                   Detail Katalog
-                </DropdownItem>
+                </DropdownItem> */}
                 <DropdownItem
                   key="delete-catalog-button"
                   className="text-danger-500"
