@@ -353,7 +353,7 @@ export default function Home() {
               removeWrapper
               alt="Garage Custom Workshop"
               className="w-full h-auto rounded-2xl border border-zinc-800"
-              src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80"
+              src="/AboutME.jpg"
             />
             {/* <div className="absolute -bottom-6 -left-6 bg-red-600 text-white p-4 rounded-xl hidden md:block">
               <p className="text-sm font-medium">🏆 Best Custom Build 2024</p>
