@@ -56,6 +56,14 @@ export function proxy(request: NextRequest) {
       const target = role ? roleDashboardMap[role] : "/login";
       return NextResponse.redirect(new URL(target, request.url));
     }
+
+    if (pathname === "/admin" || pathname === "/admin/") {
+      return NextResponse.redirect(new URL("/admin/dashboard", request.url));
+    }
+
+    if (pathname === "/client" || pathname === "/client/") {
+      return NextResponse.redirect(new URL("/client/dashboard", request.url));
+    }
   }
 }
 

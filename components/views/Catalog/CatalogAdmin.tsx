@@ -16,6 +16,7 @@ import { Key, ReactNode, useCallback, useState } from "react";
 import { CiMenuKebab } from "react-icons/ci";
 import { COLUMN_LISTS_CATALOG } from "./Catalog.constant";
 import AddCatalog from "./AddCatalog";
+import EditCatalog from "./EditCatalog";
 import ConfirmationModal from "@/components/ui/ConfirmationModal";
 
 const formatDateIndo = (dateString: string) => {
@@ -29,7 +30,20 @@ const formatDateIndo = (dateString: string) => {
 
 const CatalogAdmin = () => {
   const router = useRouter();
-  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isAddOpen,
+    onOpen: onAddOpen,
+    onClose: onAddClose,
+    onOpenChange: onAddOpenChange,
+  } = useDisclosure();
+
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose,
+    onOpenChange: onEditOpenChange,
+  } = useDisclosure();
+
   const {
     currentPage,
     currentLimit,
@@ -46,6 +60,7 @@ const CatalogAdmin = () => {
   } = useCatalog();
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [editData, setEditData] = useState<Record<string, unknown> | null>(null);
 
   const handleConfirmDelete = async () => {
     if (deleteId) {
@@ -55,6 +70,11 @@ const CatalogAdmin = () => {
         },
       });
     }
+  };
+
+  const handleOpenEdit = (catalog: Record<string, unknown>) => {
+    setEditData(catalog);
+    onEditOpen();
   };
 
   const renderCell = useCallback(
@@ -98,14 +118,12 @@ const CatalogAdmin = () => {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                {/* <DropdownItem
-                  key="detail-catalog-button"
-                  onPress={() =>
-                    router.push(`/admin/catalog/${catalog._id || catalog.id}`)
-                  }
+                <DropdownItem
+                  key="edit-catalog-button"
+                  onPress={() => handleOpenEdit(catalog)}
                 >
-                  Detail Katalog
-                </DropdownItem> */}
+                  Edit Katalog
+                </DropdownItem>
                 <DropdownItem
                   key="delete-catalog-button"
                   className="text-danger-500"
@@ -139,13 +157,23 @@ const CatalogAdmin = () => {
         renderCell={renderCell}
         totalPages={dataCatalog?.pagination?.totalPages || 1}
         buttonTopContentLabel="Tambah Katalog"
-        onClickButtonTopContent={onOpen}
+        onClickButtonTopContent={onAddOpen}
       />
       <AddCatalog
-        isOpen={isOpen}
-        onClose={onClose}
-        onOpenChange={onOpenChange}
+        isOpen={isAddOpen}
+        onClose={onAddClose}
+        onOpenChange={onAddOpenChange}
         refetchCatalog={refetchCatalog}
+      />
+      <EditCatalog
+        isOpen={isEditOpen}
+        onClose={() => {
+          onEditClose();
+          setEditData(null);
+        }}
+        onOpenChange={onEditOpenChange}
+        refetchCatalog={refetchCatalog}
+        editData={editData}
       />
       <ConfirmationModal
         isOpen={deleteId !== null}

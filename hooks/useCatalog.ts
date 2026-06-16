@@ -57,13 +57,30 @@ const useCatalog = () => {
     const res = await catalogServices.getAllCatalogs(params);
     const { data: allCatalogs } = res;
 
-    // If API returns paginated response, use it directly
-    if (allCatalogs?.pagination) {
-      return allCatalogs;
+    // Extract flat array
+    let catalogs = allCatalogs?.data || (Array.isArray(allCatalogs) ? allCatalogs : []);
+
+    // Apply frontend search filter if currentSearch exists
+    if (currentSearch) {
+      const lowerSearch = currentSearch.toLowerCase();
+      catalogs = catalogs.filter((item: any) =>
+        Object.values(item).some(
+          (val) => val && String(val).toLowerCase().includes(lowerSearch)
+        )
+      );
     }
 
-    // Flat array response — paginate on frontend
-    const catalogs = Array.isArray(allCatalogs) ? allCatalogs : [];
+    // API response: { message, meta: { currentPage, itemsPerPage, totalItems, totalPages }, data: [...] }
+    if (allCatalogs?.meta && !currentSearch) {
+      return {
+        data: catalogs,
+        pagination: {
+          totalPages: allCatalogs.meta.totalPages || 1,
+        },
+      };
+    }
+
+    // Flat array response or search active — paginate on frontend
     const page = Number(currentPage) || 1;
     const limit = Number(currentLimit) || 8;
     const totalPages = Math.ceil(catalogs.length / limit) || 1;

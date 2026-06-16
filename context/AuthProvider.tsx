@@ -15,7 +15,8 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     queryKey: authKey.me(),
     queryFn: () => authService.getProfile(),
     retry: false,
-    staleTime: Infinity,
+    staleTime: 5 * 60 * 1000, // Re-validate every 5 minutes
+    refetchOnWindowFocus: true,
   });
 
   const isUnauthorized = isError && (error as { response?: { status?: number } } | null)?.response?.status === 401;

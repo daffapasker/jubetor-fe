@@ -57,13 +57,30 @@ const useArticle = () => {
     const res = await articleServices.getAllArticles(params);
     const { data: allArticles } = res;
 
-    // If API returns paginated response, use it directly
-    if (allArticles?.pagination) {
-      return allArticles;
+    // Extract flat array
+    let articles = allArticles?.data || (Array.isArray(allArticles) ? allArticles : []);
+
+    // Apply frontend search filter if currentSearch exists
+    if (currentSearch) {
+      const lowerSearch = currentSearch.toLowerCase();
+      articles = articles.filter((item: any) =>
+        Object.values(item).some(
+          (val) => val && String(val).toLowerCase().includes(lowerSearch)
+        )
+      );
     }
 
-    // Flat array response — paginate on frontend
-    const articles = Array.isArray(allArticles) ? allArticles : [];
+    // API response: { message, meta: { currentPage, itemsPerPage, totalItems, totalPages }, data: [...] }
+    if (allArticles?.meta && !currentSearch) {
+      return {
+        data: articles,
+        pagination: {
+          totalPages: allArticles.meta.totalPages || 1,
+        },
+      };
+    }
+
+    // Flat array response or search active — paginate on frontend
     const page = Number(currentPage) || 1;
     const limit = Number(currentLimit) || 8;
     const totalPages = Math.ceil(articles.length / limit) || 1;

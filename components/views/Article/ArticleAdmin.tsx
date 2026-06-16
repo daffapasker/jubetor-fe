@@ -16,6 +16,7 @@ import { Key, ReactNode, useCallback, useState } from "react";
 import { CiMenuKebab } from "react-icons/ci";
 import { COLUMN_LISTS_ARTICLE } from "./Article.constant";
 import AddArticle from "./AddArticle";
+import EditArticle from "./EditArticle";
 import ConfirmationModal from "@/components/ui/ConfirmationModal";
 
 const formatDateIndo = (dateString: string) => {
@@ -29,7 +30,20 @@ const formatDateIndo = (dateString: string) => {
 
 const ArticleAdmin = () => {
   const router = useRouter();
-  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isAddOpen,
+    onOpen: onAddOpen,
+    onClose: onAddClose,
+    onOpenChange: onAddOpenChange,
+  } = useDisclosure();
+
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose,
+    onOpenChange: onEditOpenChange,
+  } = useDisclosure();
+
   const {
     currentPage,
     currentLimit,
@@ -46,6 +60,7 @@ const ArticleAdmin = () => {
   } = useArticle();
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [editData, setEditData] = useState<Record<string, unknown> | null>(null);
 
   const handleConfirmDelete = async () => {
     if (deleteId) {
@@ -55,6 +70,11 @@ const ArticleAdmin = () => {
         },
       });
     }
+  };
+
+  const handleOpenEdit = (article: Record<string, unknown>) => {
+    setEditData(article);
+    onEditOpen();
   };
 
   const renderCell = useCallback(
@@ -98,14 +118,12 @@ const ArticleAdmin = () => {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                {/* <DropdownItem
-                  key="detail-article-button"
-                  onPress={() =>
-                    router.push(`/admin/article/${article._id || article.id}`)
-                  }
+                <DropdownItem
+                  key="edit-article-button"
+                  onPress={() => handleOpenEdit(article)}
                 >
-                  Detail Artikel
-                </DropdownItem> */}
+                  Edit Artikel
+                </DropdownItem>
                 <DropdownItem
                   key="delete-article-button"
                   className="text-danger-500"
@@ -139,13 +157,23 @@ const ArticleAdmin = () => {
         renderCell={renderCell}
         totalPages={dataArticle?.pagination?.totalPages || 1}
         buttonTopContentLabel="Tambah Artikel"
-        onClickButtonTopContent={onOpen}
+        onClickButtonTopContent={onAddOpen}
       />
       <AddArticle
-        isOpen={isOpen}
-        onClose={onClose}
-        onOpenChange={onOpenChange}
+        isOpen={isAddOpen}
+        onClose={onAddClose}
+        onOpenChange={onAddOpenChange}
         refetchArticle={refetchArticle}
+      />
+      <EditArticle
+        isOpen={isEditOpen}
+        onClose={() => {
+          onEditClose();
+          setEditData(null);
+        }}
+        onOpenChange={onEditOpenChange}
+        refetchArticle={refetchArticle}
+        editData={editData}
       />
       <ConfirmationModal
         isOpen={deleteId !== null}

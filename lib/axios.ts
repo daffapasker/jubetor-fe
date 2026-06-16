@@ -37,5 +37,20 @@ instance.interceptors.request.use((config) => {
 
 instance.interceptors.response.use(
   (response) => response,
-  (error) => Promise.reject(error),
+  (error) => {
+    if (
+      error.response?.status === 401 &&
+      typeof window !== "undefined"
+    ) {
+      // Clear token cookie
+      document.cookie = "token=; path=/; max-age=0";
+
+      // Only force redirect to login if the user is in a protected area
+      const pathname = window.location.pathname;
+      if (pathname.startsWith("/admin") || pathname.startsWith("/client")) {
+        window.location.href = "/login";
+      }
+    }
+    return Promise.reject(error);
+  },
 );

@@ -57,28 +57,34 @@ const useUser = () => {
     const res = await userServices.getAllUsers(params);
     const { data: allUsers } = res;
 
-    // Filter only client role on frontend
-    const clientUsers = Array.isArray(allUsers)
-      ? allUsers.filter(
-          (user: Record<string, unknown>) => user.role === "client",
-        )
-      : allUsers?.data?.filter(
-          (user: Record<string, unknown>) => user.role === "client",
-        ) || [];
+    const usersArray = allUsers?.data || (Array.isArray(allUsers) ? allUsers : []);
 
-    // If API returns paginated response, use it; otherwise build pagination from filtered data
-    if (allUsers?.pagination) {
+    let filteredData = usersArray.filter(
+      (user: Record<string, unknown>) => user.role === "client",
+    );
+
+    if (currentSearch) {
+      const lowerSearch = currentSearch.toLowerCase();
+      filteredData = filteredData.filter((item: any) =>
+        Object.values(item).some(
+          (val) => val && String(val).toLowerCase().includes(lowerSearch)
+        )
+      );
+    }
+
+    if (allUsers?.meta && !currentSearch) {
       return {
-        data: clientUsers,
-        pagination: allUsers.pagination,
+        data: filteredData,
+        pagination: {
+          totalPages: allUsers.meta.totalPages || 1,
+        },
       };
     }
 
-    // Flat array response — paginate on frontend
     const page = Number(currentPage) || 1;
     const limit = Number(currentLimit) || 8;
-    const totalPages = Math.ceil(clientUsers.length / limit) || 1;
-    const paginatedData = clientUsers.slice((page - 1) * limit, page * limit);
+    const totalPages = Math.ceil(filteredData.length / limit) || 1;
+    const paginatedData = filteredData.slice((page - 1) * limit, page * limit);
 
     return {
       data: paginatedData,

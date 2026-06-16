@@ -10,20 +10,26 @@ import {
   DropdownTrigger,
   useDisclosure,
 } from "@heroui/react";
-import { useRouter } from "next/navigation";
 import { Key, ReactNode, useCallback, useState } from "react";
 import { CiMenuKebab } from "react-icons/ci";
 import { COLUMN_LISTS_USER } from "./User.constant";
 import AddUser from "./AddUser";
+import EditUser from "./EditUser";
 import ConfirmationModal from "@/components/ui/ConfirmationModal";
 
 const UserAdmin = () => {
-  const router = useRouter();
   const {
     isOpen: isAddOpen,
     onOpen: onAddOpen,
     onClose: onAddClose,
     onOpenChange: onAddOpenChange,
+  } = useDisclosure();
+
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose,
+    onOpenChange: onEditOpenChange,
   } = useDisclosure();
 
   const {
@@ -42,6 +48,7 @@ const UserAdmin = () => {
   } = useUser();
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [editData, setEditData] = useState<Record<string, unknown> | null>(null);
 
   const handleConfirmDelete = async () => {
     if (deleteId) {
@@ -53,6 +60,11 @@ const UserAdmin = () => {
     }
   };
 
+  const handleOpenEdit = (user: Record<string, unknown>) => {
+    setEditData(user);
+    onEditOpen();
+  };
+
   const renderCell = useCallback(
     (user: Record<string, unknown>, columnKey: Key) => {
       const cellValue = user[columnKey as keyof typeof user];
@@ -62,25 +74,23 @@ const UserAdmin = () => {
           return (
             <Dropdown>
               <DropdownTrigger>
-                <Button isIconOnly hidden size="sm" variant="light" aria-label="Actions">
+                <Button isIconOnly size="sm" variant="light" aria-label="Actions">
                   <CiMenuKebab className="text-default-700" />
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem
-                  key="detail-user-button"
-                  onPress={() =>
-                    router.push(`/admin/user/${user._id || user.id}`)
-                  }
+                  key="edit-user-button"
+                  onPress={() => handleOpenEdit(user)}
                 >
-                  Detail User
+                  Edit Pengguna
                 </DropdownItem>
                 <DropdownItem
                   key="delete-user-button"
                   className="text-danger-500"
                   onPress={() => setDeleteId((user._id || user.id) as string)}
                 >
-                  Delete User
+                  Hapus Pengguna
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -89,7 +99,7 @@ const UserAdmin = () => {
           return cellValue as ReactNode;
       }
     },
-    [router],
+    [],
   );
 
   return (
@@ -115,6 +125,16 @@ const UserAdmin = () => {
         onClose={onAddClose}
         onOpenChange={onAddOpenChange}
         refetchUser={refetchUser}
+      />
+      <EditUser
+        isOpen={isEditOpen}
+        onClose={() => {
+          onEditClose();
+          setEditData(null);
+        }}
+        onOpenChange={onEditOpenChange}
+        refetchUser={refetchUser}
+        editData={editData}
       />
       <ConfirmationModal
         isOpen={deleteId !== null}

@@ -29,11 +29,11 @@ export default function DashboardSidebar({
   return (
     <>
       {/* ── Mobile top bar ── */}
-      <div className="fixed top-0 right-0 left-0 z-40 flex items-center justify-between border-b border-neutral-800 bg-neutral-950 px-4 py-3 md:hidden">
-        <h1 className="text-lg font-bold text-red-600">Jubetor</h1>
+      <div className="fixed top-0 right-0 left-0 z-40 flex items-center justify-center border-b border-neutral-800 bg-neutral-950 px-4 py-3 md:hidden">
+        <h1 className="text-lg font-bold text-red-600">Jubetor ID</h1>
         <button
           onClick={() => setIsMobileOpen(true)}
-          className="rounded-lg p-2 text-neutral-400 transition-colors hover:bg-neutral-800"
+          className="absolute right-4 rounded-lg p-2 text-neutral-400 transition-colors hover:bg-neutral-800"
           aria-label="Open menu"
         >
           <CiMenuBurger size={24} />
@@ -60,13 +60,13 @@ export default function DashboardSidebar({
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
             >
               {/* Close button */}
-              <div className="flex items-center justify-between px-5 pt-5 pb-2">
+              <div className="relative flex items-center justify-center px-5 pt-5 pb-2">
                 <span className="text-xl font-bold tracking-tight text-red-600">
-                  Jubetor
+                  Jubetor ID
                 </span>
                 <button
                   onClick={() => setIsMobileOpen(false)}
-                  className="rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-800"
+                  className="absolute right-5 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-800"
                   aria-label="Close menu"
                 >
                   <IoCloseOutline size={24} />
@@ -115,9 +115,9 @@ export default function DashboardSidebar({
       {/* ── Desktop sidebar ── */}
       <aside className="fixed top-0 bottom-0 left-0 z-30 hidden w-56 flex-col border-r border-neutral-800 bg-neutral-950 md:flex">
         {/* Logo */}
-        <div className="px-5 pt-5 pb-2">
+        <div className="flex justify-center px-5 pt-5 pb-2">
           <span className="text-xl font-bold tracking-tight text-red-600">
-            Jubetor
+            Jubetor ID
           </span>
         </div>
 

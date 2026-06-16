@@ -110,6 +110,10 @@ const DataTable = (props: PropTypes) => {
             total={totalPages}
             onChange={onChangePage}
             loop
+            classNames={{
+              item: "bg-transparent",
+              cursor: "bg-red-600 text-white font-semibold",
+            }}
           />
         ) : (
           // Placeholder to keep layout stable when there's only 1 page
